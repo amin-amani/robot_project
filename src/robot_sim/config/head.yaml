@@ -1,3 +1,10 @@
-type: "position_controllers/JointPositionController"
-joint: J3
-pid: {p: 100.0, i: 0.01, d: 1.0}
+r2d2:
+    controller1:
+        type: effort_controllers/JointPositionController
+        joint: J3
+        pid: {p: 100.0, i: 0.01, d: 10.0}
+
+    controller2:
+        type: effort_controllers/JointPositionController
+        joint: J2
+        pid: {p: 100.0, i: 0.01, d: 10.0}

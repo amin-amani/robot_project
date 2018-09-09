@@ -1,4 +1,0 @@
-type: "position_controllers/JointGroupPositionController"
-joints:
- - J2
- - J1

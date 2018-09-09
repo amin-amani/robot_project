@@ -17,8 +17,8 @@
   <arg name="headless" value="$(arg headless)"/>
 </include>
 
-<param name="robot_description" command="$(find xacro)/xacro.py $(arg model)" />
-
+<!--param name="robot_description" command="$(find xacro)/xacro.py $(arg model)" /-->
+<param name="robot_description" command="$(find xacro)/xacro --inorder $(arg model)" />
 <!-- push robot_description to factory and spawn robot in gazebo -->
 <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
       args="-z 1.0 -unpause -urdf -model robot -param robot_description" respawn="false" output="screen" />
@@ -27,20 +27,14 @@
   <param name="publish_frequency" type="double" value="30.0" />
 </node>
 
+<!-- Load joint controller configurations from YAML file to parameter server -->
+<rosparam file="$(find robot_sim)/config/rrbot_control.yaml" command="load"/>
 
-  <rosparam command="load"
-            file="$(find robot_sim)/config/joints.yaml"
-            ns="r2d2_joint_state_controller" />
-  <rosparam command="load"
-            file="$(find robot_sim)/config/head.yaml"
-            ns="r2d2_head_controller" />
-            <rosparam command="load"
-                      file="$(find robot_sim)/config/gripper.yaml"
-                      ns="r2d2_gripper_controller" />
+<!-- load the controllers -->
+<node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+      output="screen" ns="/rrbot" args="joint_state_controller
+                                        joint1_position_controller
+                                        joint2_position_controller"/>
 
-  <node name="r2d2_controller_spawner" pkg="controller_manager" type="spawner"
-    args="r2d2_joint_state_controller
-          r2d2_head_controller
-          r2d2_gripper_controller
-          --shutdown-timeout 3"/>
+
 </launch>
