@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
-<robot  name="r2d2">
- <link
+<robot  xmlns:xacro="http://www.ros.org/wiki/xacro" name="rrbot">
+
+ <xacro:include filename="$(find robot_sim)/urdf/materials.xacro" />
+
+<link
     name="base_link">
     <inertial>
       <origin
@@ -90,25 +93,9 @@
    <axis
      xyz="0 1 0" />
  </joint>
-  <!--joint
-    name="J1"
-    type="prismatic">
-    <origin
-      xyz="0.01 0.197440112838672 0.2"
-      rpy="0 0 0" />
-    <parent
-      link="base_link" />
-    <child
-      link="L1" />
-    <axis
-      xyz="0 1 0" />
-      <limit effort="1000.0" lower="-0.38" upper="0" velocity="0.5"/>
-
-  </joint-->
 
 
-<link
-    name="L2">
+<link name="L2">
     <inertial>
       <origin
         xyz="0.015 0.0014799004971911 0.00165487689757998"
@@ -155,6 +142,79 @@
     <origin rpy="0 0 0" xyz=".1 0.0 .09"/>
 
   </joint>
+  <link  name="L3">
+      <inertial>
+        <origin
+         xyz="0.0 0.0 0"
+          rpy="0 0 0" />
+        <mass
+          value="0.0117809724509617" />
+        <inertia
+          ixx="0"
+          ixy="0"
+          ixz="0"
+          iyy="0"
+          iyz="0"
+          izz="0" />
+      </inertial>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://robot_sim/meshes/L3.STL" />
+        </geometry>
+      </collision>
+      <visual>
+        <origin
+          xyz="0.0 -0.0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="package://robot_sim/meshes/L3.STL" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+        </material>
+      </visual>
+
+    </link>
+
+<link name="camera_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+      <box size="0.01 0.01 0.01"/>
+        </geometry>
+        <material name="orange"/>
+      </visual>
+
+      <inertial>
+        <mass value="1e-5" />
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+      </inertial>
+    </link>
+
+   <joint name="J3" type="prismatic">
+      <parent link="L2"/>
+      <child link="L3"/>
+      <limit effort="1000.0" lower="0" upper="0.09" velocity="0.5"/>
+      <origin rpy="0 0 0" xyz="0.015 -0.0150 0"/>
+      <axis xyz="0 0 -1" />
+    </joint>
+
+
+
+<joint name="J4" type="continuous">
+ <parent link="L2"/>
+ <child link="camera_link"/>
+ <origin rpy="0 0 0" xyz="0.015  -0.035 0"/>
+</joint>
+
 
 <transmission name="tran2">
     <type>transmission_interface/SimpleTransmission</type>
@@ -166,61 +226,6 @@
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
-
-
-
-
-<link
-    name="L3">
-    <inertial>
-      <origin
-       xyz="0.015 -0.0150 0"
-        rpy="0 0 0" />
-      <mass
-        value="0.0117809724509617" />
-      <inertia
-        ixx="0"
-        ixy="0"
-        ixz="0"
-        iyy="0"
-        iyz="0"
-        izz="0" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0.015 -0.0150 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://robot_sim/meshes/L3.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0.015 -0.0150 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://robot_sim/meshes/L3.STL" />
-      </geometry>
-    </collision>
-  </link>
-
-
- <joint name="J3" type="prismatic">
-    <parent link="L2"/>
-    <child link="L3"/>
-    <limit effort="1000.0" lower="0" upper="0.09" velocity="0.5"/>
-    <origin rpy="0 0 0" xyz="0.0 -0.0 0"/>
-    <axis xyz="0 0 -1" />
-  </joint>
-
-
 <transmission name="tran3">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="J3">
@@ -240,6 +245,76 @@
     </plugin>
 </gazebo>
 
+<gazebo>
+   <plugin name="imu_plugin" filename="libgazebo_ros_imu.so">
+     <alwaysOn>true</alwaysOn>
+     <bodyName>L2</bodyName>
+     <topicName>imu</topicName>
+     <serviceName>imu_service</serviceName>
+     <gaussianNoise>0.0</gaussianNoise>
+     <updateRate>20.0</updateRate>
+   </plugin>
+ </gazebo>
 
+<gazebo>
+
+
+<plugin name="ft_sensor" filename="libgazebo_ros_ft_sensor.so">
+        <updateRate>100.0</updateRate>
+        <topicName>ft_sensor_topic</topicName>
+        <jointName>J1</jointName>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.003</stddev> <!-- change this to simulate noise -->
+        </noise>
+</plugin>
+
+</gazebo>
+
+
+<gazebo reference="L3">
+  <sensor type="camera" name="camera1">
+    <update_rate>30.0</update_rate>
+    <camera name="head">
+      <horizontal_fov>1.3962634</horizontal_fov>
+      <image>
+        <width>800</width>
+        <height>800</height>
+        <format>R8G8B8</format>
+      </image>
+      <clip>
+        <near>0.02</near>
+        <far>300</far>
+      </clip>
+      <noise>
+        <type>gaussian</type>
+        <!-- Noise is sampled independently per pixel on each frame.
+             That pixel's noise value is added to each of its color
+             channels, which at that point lie in the range [0,1]. -->
+        <mean>0.0</mean>
+        <stddev>0.007</stddev>
+      </noise>
+    </camera>
+    <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+      <alwaysOn>true</alwaysOn>
+      <updateRate>0.0</updateRate>
+      <cameraName>rrbot/camera1</cameraName>
+      <imageTopicName>image_raw</imageTopicName>
+      <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+      <frameName>camera_link</frameName>
+      <hackBaseline>0.07</hackBaseline>
+      <distortionK1>0.0</distortionK1>
+      <distortionK2>0.0</distortionK2>
+      <distortionK3>0.0</distortionK3>
+      <distortionT1>0.0</distortionT1>
+      <distortionT2>0.0</distortionT2>
+    </plugin>
+  </sensor>
+</gazebo>
+
+<gazebo reference="L3">
+    <material>Gazebo/Orange</material>
+</gazebo>
 
   </robot>
