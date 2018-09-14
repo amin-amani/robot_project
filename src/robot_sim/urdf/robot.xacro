@@ -2,15 +2,15 @@
 <robot  xmlns:xacro="http://www.ros.org/wiki/xacro" name="rrbot">
 
  <xacro:include filename="$(find robot_sim)/urdf/materials.xacro" />
-
-<link
-    name="base_link">
+ <link name="dummy">
+   </link>
+<link name="base_link">
     <inertial>
       <origin
-        xyz="0.15 0.15 0.15"
+        xyz="0.15 0.15 .2"
         rpy="0 0 0" />
       <mass
-        value="6" />
+        value="10" />
       <inertia
         ixx="0"
         ixy="0"
@@ -43,7 +43,10 @@
       </geometry>
     </collision>
   </link>
-
+  <joint name="dummy_joint" type="fixed">
+     <parent link="dummy"/>
+     <child link="base_link"/>
+   </joint>
 <link
     name="L1">
     <inertial>
@@ -183,6 +186,25 @@
 
     </link>
 
+<link name="niddle">
+
+<inertial>
+  <mass value="0.001" />
+  <origin xyz="0 0 0" rpy="0 0 0"/>
+  <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
+</inertial>
+    <collision name="collision">
+     <geometry>
+     <cylinder length="0.01" radius="0.001"/>
+     </geometry>
+</collision>
+   <visual name="visual">
+     <geometry>
+     <cylinder length="0.01" radius="0.001"/>
+     </geometry>
+   </visual>
+ </link>
+
 <link name="camera_link">
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -215,23 +237,52 @@
  <origin rpy="0 0 0" xyz="0.015  -0.035 0"/>
 </joint>
 
+<joint name="J5" type="continuous">
+   <parent link="L3"/>
+   <child link="niddle"/>
+    <origin rpy="0 0 0" xyz="0.00 -0.00 -0.005"/>
+   <axis xyz="0 0 1" />
+ </joint>
 
-<transmission name="tran2">
+<transmission name="tran1">
     <type>transmission_interface/SimpleTransmission</type>
-    <joint name="J2">
+    <joint name="J1">
       <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
     </joint>
-    <actuator name="motor2">
+    <actuator name="motor1">
       <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
+
+ <transmission name="tran2">
+     <type>transmission_interface/SimpleTransmission</type>
+     <joint name="J2">
+       <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+     </joint>
+     <actuator name="motor2">
+       <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+       <mechanicalReduction>1</mechanicalReduction>
+     </actuator>
+   </transmission>
+
 <transmission name="tran3">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="J3">
       <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
     </joint>
-    <actuator name="motor1">
+    <actuator name="motor3">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+<transmission name="tran4">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="J5">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motor4">
       <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
@@ -245,32 +296,7 @@
     </plugin>
 </gazebo>
 
-<gazebo>
-   <plugin name="imu_plugin" filename="libgazebo_ros_imu.so">
-     <alwaysOn>true</alwaysOn>
-     <bodyName>L2</bodyName>
-     <topicName>imu</topicName>
-     <serviceName>imu_service</serviceName>
-     <gaussianNoise>0.0</gaussianNoise>
-     <updateRate>20.0</updateRate>
-   </plugin>
- </gazebo>
 
-<gazebo>
-
-
-<plugin name="ft_sensor" filename="libgazebo_ros_ft_sensor.so">
-        <updateRate>100.0</updateRate>
-        <topicName>ft_sensor_topic</topicName>
-        <jointName>J1</jointName>
-        <noise>
-          <type>gaussian</type>
-          <mean>0.0</mean>
-          <stddev>0.003</stddev> <!-- change this to simulate noise -->
-        </noise>
-</plugin>
-
-</gazebo>
 
 
 <gazebo reference="L3">
@@ -316,5 +342,7 @@
 <gazebo reference="L3">
     <material>Gazebo/Orange</material>
 </gazebo>
-
+<gazebo reference="niddle">
+    <material>Gazebo/Orange</material>
+</gazebo>
   </robot>
