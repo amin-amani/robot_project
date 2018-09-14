@@ -339,6 +339,16 @@
   </sensor>
 </gazebo>
 
+<gazebo>
+<plugin name="gazebo_ros_vacuum_gripper" filename="libgazebo_ros_vacuum_gripper.so">
+        <robotNamespace>/vacuum_gripper</robotNamespace>
+        <bodyName>niddle</bodyName>
+        <topicName>grasping</topicName>
+      </plugin>
+</gazebo>
+<gazebo reference="L2">
+    <material>Gazebo/Orange</material>
+</gazebo>
 <gazebo reference="L3">
     <material>Gazebo/Orange</material>
 </gazebo>
