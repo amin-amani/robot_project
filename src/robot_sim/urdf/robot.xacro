@@ -91,7 +91,7 @@
 <joint name="J1" type="prismatic">
    <parent link="base_link"/>
    <child link="L1"/>
-   <limit effort="1000.0" lower="-100" upper="100" velocity="0.5"/>
+   <limit effort="1000.0" lower="-0.2" upper="0.08" velocity="0.5"/>
    <origin rpy="0 0 0" xyz="0.01 0.197440112838672 0.2"/>
    <axis
      xyz="0 1 0" />
@@ -141,7 +141,7 @@
  <joint name="J2" type="prismatic">
     <parent link="L1"/>
     <child link="L2"/>
-    <limit effort="1000.0" lower="0" upper=".2" velocity="0.5"/>
+    <limit effort="1000.0" lower="-0.12" upper=".17" velocity="0.5"/>
     <origin rpy="0 0 0" xyz=".1 0.0 .09"/>
 
   </joint>
@@ -205,6 +205,21 @@
    </visual>
  </link>
 
+<link name="end_effector">
+     <gravity>0</gravity>
+     <visual>
+       <origin rpy="0 0 0" xyz="0 0 -0.005"/>
+       <geometry>
+         <box size="0.003 0.003 0.003"/>
+       </geometry>
+     </visual>
+     <inertial>
+       <origin rpy="0 0 0" xyz="0.000000 0.000000 0.000000"/>
+       <mass value="0.0001"/>
+       <inertia ixx="1e-08" ixy="0" ixz="0" iyy="1e-08" iyz="0" izz="1e-08"/>
+     </inertial>
+   </link>
+
 <link name="camera_link">
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -243,6 +258,13 @@
     <origin rpy="0 0 0" xyz="0.00 -0.00 -0.005"/>
    <axis xyz="0 0 1" />
  </joint>
+
+<joint name="end_joint" type="revolute">
+  <parent link="niddle" />
+  <child link="end_effector" />
+  <origin rpy="0 0 0" xyz="0.0 0 0" />
+  <limit effort="30" velocity="1.0" lower="0" upper="0" />
+</joint>
 
 <transmission name="tran1">
     <type>transmission_interface/SimpleTransmission</type>
