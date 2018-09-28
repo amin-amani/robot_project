@@ -65,6 +65,8 @@ add_definitions( -std=c++11 -fPIC)
 
 set( QT_SOURCES
     src/gripper_sim.cpp
+    src/pidcontroller.h
+    src/pidcontroller.cpp
 
 
 
