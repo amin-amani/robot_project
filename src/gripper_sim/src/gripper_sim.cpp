@@ -17,7 +17,7 @@ float command=0;
   QString nearestLink="";
 ros::ServiceClient client;
 // PIDController( double dt, double max, double min, double Kp, double Kd, double Ki );
-PIDController pidController(1/ferq,5000,-3000,50000,10000,0.5);
+PIDController pidController(1/ferq,10,-10,8,1,0.5);
 
 geometry_msgs::Pose GetLinkPosition(QString linkName ,const gazebo_msgs::LinkStates::ConstPtr linkStates)
 {
@@ -63,17 +63,17 @@ for(int i=0;i<names.size();i++)
 }
 nearestLink=resultLink;
 distance=resulDistance;
-qDebug()<<nearestLink<<distance;
+//qDebug()<<nearestLink<<distance;
 
 }
 
  void ApplyWrench(QString bodyName,double force)
  {
    gazebo_msgs::ApplyBodyWrench bw;
-qDebug()<<bodyName<<force;
+qDebug()<<"force to->"<<bodyName<<force;
  bw.request.body_name=bodyName.toStdString();
 // bw.request.reference_frame="box::link";
- bw.request.duration.fromSec(1);
+ bw.request.duration.fromSec(1/ferq);
  //bw.request.start_time.fromSec(0);
  bw.request.wrench.force.z=force;
      client.call(bw);
@@ -90,9 +90,9 @@ void chatterCallback(const gazebo_msgs::LinkStates::ConstPtr& msg)
   geometry_msgs::Pose parentPosition=GetLinkPosition("robot::niddle",msg);
   GetNearestLink(parentPosition,"robot",msg,distance,nearestLink);
  command=pidController.Calculate(parentPosition.position.z,distance);
-
+    ApplyWrench("cap0805::link",command);
 //qDebug()<<QString::fromStdString( names[0])<<psitions[0].position.x<<psitions[0].position.y<<psitions[0].position.z;
-ROS_INFO("I heard");
+//ROS_INFO("I heard");
 
 }
 
@@ -105,7 +105,7 @@ int main(int argc, char **argv)
 
   ros::Publisher chatter_pub = nh.advertise<std_msgs::String>("chatter", 1000);
   ros::Subscriber sub = nh.subscribe("/gazebo/link_states", 1, &chatterCallback);
-  ros::ServiceClient client = nh.serviceClient<gazebo_msgs::ApplyBodyWrenchRequest>("/gazebo/apply_body_wrench");
+ client = nh.serviceClient<gazebo_msgs::ApplyBodyWrenchRequest>("/gazebo/apply_body_wrench");
 
 
   ros::Rate loop_rate(ferq);
@@ -114,7 +114,7 @@ int main(int argc, char **argv)
   {
     std_msgs::String msg;
     //msg.data = "hello world";
-    ApplyWrench(nearestLink,command);
+    //ApplyWrench(nearestLink,command);
    // chatter_pub.publish(msg);
 
     ros::spinOnce();
