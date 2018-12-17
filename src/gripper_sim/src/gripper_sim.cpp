@@ -72,9 +72,9 @@ qDebug()<<nearestLink<<distance;
    gazebo_msgs::ApplyBodyWrench bw;
 qDebug()<<bodyName<<force;
  bw.request.body_name=bodyName.toStdString();
-// bw.request.reference_frame="box::link";
- bw.request.duration.fromSec(1);
- //bw.request.start_time.fromSec(0);
+ bw.request.reference_frame=bodyName.toStdString();
+ bw.request.duration.fromSec(.5);
+ bw.request.start_time.fromSec(0);
  bw.request.wrench.force.z=force;
      client.call(bw);
 
