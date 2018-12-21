@@ -1,60 +1,16 @@
 <?xml version="1.0"?>
+
 <robot  xmlns:xacro="http://www.ros.org/wiki/xacro" name="rrbot">
 
- <xacro:include filename="$(find robot_sim)/urdf/materials.xacro" />
- <link name="dummy">
-   </link>
-<link name="base_link">
-    <inertial>
-      <origin
-        xyz="0.15 0.15 .2"
-        rpy="0 0 0" />
-      <mass
-        value="10" />
-      <inertia
-        ixx="0"
-        ixy="0"
-        ixz="0"
-        iyy="0"
-        iyz="0"
-        izz="0" />
-    </inertial>
-    <visual>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://robot_sim/meshes/base_link.STL" />
-      </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-      </material>
-    </visual>
-    <collision>
-      <origin
-        xyz="0 0 0"
-        rpy="0 0 0" />
-      <geometry>
-        <mesh
-          filename="package://robot_sim/meshes/base_link.STL" />
-      </geometry>
-    </collision>
-  </link>
-  <joint name="dummy_joint" type="fixed">
-     <parent link="dummy"/>
-     <child link="base_link"/>
-   </joint>
+
 <link
-    name="L1">
+    name="base_link">
     <inertial>
       <origin
-        xyz="0.14 0.00999999999999998 0.0647872340425532"
+        xyz="0.249025149842267 0.288536369831321 0.424095630505477"
         rpy="0 0 0" />
       <mass
-        value="0.188" />
+        value="1200.2" />
       <inertia
         ixx="0"
         ixy="0"
@@ -69,7 +25,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://robot_sim/meshes/L1.STL" />
+          filename="package://robot_sim/meshes/base_link.STL" />
       </geometry>
       <material
         name="">
@@ -83,28 +39,19 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://robot_sim/meshes/L1.STL" />
+          filename="package://robot_sim/meshes/base_link.STL" />
       </geometry>
     </collision>
   </link>
 
-<joint name="J1" type="prismatic">
-   <parent link="base_link"/>
-   <child link="L1"/>
-   <limit effort="1000.0" lower="-0.2" upper="0.08" velocity="0.5"/>
-   <origin rpy="0 0 0" xyz="0.01 0.197440112838672 0.2"/>
-   <axis
-     xyz="0 1 0" />
- </joint>
-
-
-<link name="L2">
+<link
+    name="p1">
     <inertial>
       <origin
-        xyz="0.015 0.0014799004971911 0.00165487689757998"
+        xyz="1.38777878078145E-16 0.185555555555556 0.0200000000000001"
         rpy="0 0 0" />
       <mass
-        value="0.00887444678594554" />
+        value="1.512" />
       <inertia
         ixx="0"
         ixy="0"
@@ -119,7 +66,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://robot_sim/meshes/L2.STL" />
+          filename="package://robot_sim/meshes/p1.STL" />
       </geometry>
       <material
         name="">
@@ -133,142 +80,239 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://robot_sim/meshes/L2.STL" />
+          filename="package://robot_sim/meshes/p1.STL" />
       </geometry>
     </collision>
   </link>
 
- <joint name="J2" type="prismatic">
-    <parent link="L1"/>
-    <child link="L2"/>
-    <limit effort="1000.0" lower="-0.12" upper=".17" velocity="0.5"/>
-    <origin rpy="0 0 0" xyz=".1 0.0 .09"/>
+<joint  name="j1"   type="prismatic">
 
+    <origin
+      xyz="0.249025149842267 0.1 0.50"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="p1" />
+    <axis
+      xyz="0 1 0" />
+      <limit effort="1000.0" lower="-0.05" upper=".4" velocity="0.5"/>
   </joint>
-  <link  name="L3">
-      <inertial>
-        <origin
-         xyz="0.0 0.0 0"
-          rpy="0 0 0" />
-        <mass
-          value="0.0117809724509617" />
-        <inertia
-          ixx="0"
-          ixy="0"
-          ixz="0"
-          iyy="0"
-          iyz="0"
-          izz="0" />
-      </inertial>
-      <collision>
-        <origin
-          xyz="0 0 0"
-          rpy="0 0 0" />
-        <geometry>
-          <mesh
-            filename="package://robot_sim/meshes/L3.STL" />
-        </geometry>
-      </collision>
-      <visual>
-        <origin
-          xyz="0.0 -0.0 0"
-          rpy="0 0 0" />
-        <geometry>
-          <mesh
-            filename="package://robot_sim/meshes/L3.STL" />
-        </geometry>
-        <material
-          name="">
-          <color
-            rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-        </material>
-      </visual>
 
-    </link>
+<link    name="p2">
+    <inertial>
+      <origin
+        xyz="-0.02 0.03 0.052047787481715"
+        rpy="0 0 0" />
+      <mass
+        value="0.122547568872596" />
+      <inertia
+        ixx="0"
+        ixy="0"
+        ixz="0"
+        iyy="0"
+        iyz="0"
+        izz="0" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_sim/meshes/p2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_sim/meshes/p2.STL" />
+      </geometry>
+    </collision>
+  </link>
 
-<link name="niddle">
+<joint    name="j2"    type="prismatic">
+    <origin
+      xyz="-0.0 -0.04 0.21"
+      rpy="0 0 3.1415" />
+    <parent
+      link="p1" />
+    <child
+      link="p2" />
+    <axis
+      xyz="1 0 0" />
+      <limit effort="1000.0" lower="-0.23" upper="0.27" velocity="0.5"/>
+  </joint>
+<!--bolbring -->
+<link    name="p3">
+    <inertial>
+      <origin
+        xyz="0 -0.0310687231692988 0.000105308099467155"
+        rpy="0 0 0" />
+      <mass
+        value="0.161431077818511" />
+      <inertia
+        ixx="0"
+        ixy="0"
+        ixz="0"
+        iyy="0"
+        iyz="0"
+        izz="0" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0.04 0 0"
+        rpy="0 0 1.57" />
+      <geometry>
+        <mesh
+          filename="package://robot_sim/meshes/p3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_sim/meshes/p3.STL" />
+      </geometry>
+    </collision>
+  </link>
+<!--bolbring end -->
+<joint name="j3"   type="continuous">
+    <origin
+      xyz="-0.02 -0.07 0.04"
+      rpy="0 1.57 0" />
+    <parent
+      link="p2" />
+    <child
+      link="p3" />
+    <axis
+      xyz="1 0 0" />
+  </joint>
 
-<inertial>
-  <mass value="0.001" />
-  <origin xyz="0 0 0" rpy="0 0 0"/>
-  <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
-</inertial>
-    <collision name="collision">
-     <geometry>
-     <cylinder length="0.01" radius="0.001"/>
-     </geometry>
-</collision>
-   <visual name="visual">
-     <geometry>
-     <cylinder length="0.01" radius="0.001"/>
-     </geometry>
-   </visual>
- </link>
+<link   name="p4">
+    <inertial>
+      <origin
+        xyz="0.0137795085596931 -0.002 0.00800000000000012"
+        rpy="0 0 0" />
+      <mass
+        value="2" />
+      <inertia
+        ixx="0"
+        ixy="0"
+        ixz="0"
+        iyy="0"
+        iyz="0"
+        izz="0" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_sim/meshes/p4.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_sim/meshes/p4.STL" />
+      </geometry>
+    </collision>
+  </link>
 
-<link name="end_effector">
-     <gravity>0</gravity>
-     <visual>
-       <origin rpy="0 0 0" xyz="0 0 -0.005"/>
-       <geometry>
-         <box size="0.003 0.003 0.003"/>
-       </geometry>
-     </visual>
-     <inertial>
-       <origin rpy="0 0 0" xyz="0.000000 0.000000 0.000000"/>
-       <mass value="0.0001"/>
-       <inertia ixx="1e-08" ixy="0" ixz="0" iyy="1e-08" iyz="0" izz="1e-08"/>
-     </inertial>
-   </link>
+<joint    name="j4"    type="prismatic">
+    <origin
+      xyz="0 0 0"
+      rpy="0 0 1.57" />
+    <parent
+      link="p3" />
+    <child
+      link="p4" />
+    <axis
+      xyz="0 1 0" />
+      <limit effort="1000.0" lower="-0.073" upper="-0.010" velocity="0.5"/>
+  </joint>
 
-<link name="camera_link">
-      <visual>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-      <box size="0.01 0.01 0.01"/>
-        </geometry>
-        <material name="orange"/>
-      </visual>
+<link   name="p5">
+    <inertial>
+      <origin
+        xyz="0.0137795085596931 -0.002 0.00800000000000012"
+        rpy="0 0 0" />
+      <mass
+        value="1" />
+      <inertia
+        ixx="0"
+        ixy="0"
+        ixz="0"
+        iyy="0"
+        iyz="0"
+        izz="0" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_sim/meshes/p5.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://robot_sim/meshes/p5.STL" />
+      </geometry>
+    </collision>
+  </link>
 
-      <inertial>
-        <mass value="1e-5" />
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
-      </inertial>
-    </link>
-
-   <joint name="J3" type="prismatic">
-      <parent link="L2"/>
-      <child link="L3"/>
-      <limit effort="1000.0" lower="0" upper="0.09" velocity="0.5"/>
-      <origin rpy="0 0 0" xyz="0.015 -0.0150 0"/>
-      <axis xyz="0 0 -1" />
-    </joint>
-
-
-
-<joint name="J4" type="continuous">
- <parent link="L2"/>
- <child link="camera_link"/>
- <origin rpy="0 1.57 -1.570" xyz="0.015  -0.035 0"/>
-</joint>
-
-<joint name="J5" type="continuous">
-   <parent link="L3"/>
-   <child link="niddle"/>
-    <origin rpy="0 0 0" xyz="0.00 -0.00 -0.005"/>
-   <axis xyz="0 0 1" />
- </joint>
-
-<joint name="end_joint" type="revolute">
-  <parent link="niddle" />
-  <child link="end_effector" />
-  <origin rpy="0 0 0" xyz="0.0 0 0" />
-  <limit effort="30" velocity="1.0" lower="0" upper="0" />
-</joint>
+<joint    name="j5"    type="prismatic">
+    <origin
+      xyz="-0.0085 -0.1332 0"
+      rpy="0 1.57 0" />
+    <parent
+      link="p4" />
+    <child
+      link="p5" />
+    <axis
+      xyz="1 0 0" />
+      <limit effort="1000.0" lower="-0.1" upper="0.02" velocity="0.5"/>
+  </joint>
 
 <transmission name="tran1">
     <type>transmission_interface/SimpleTransmission</type>
-    <joint name="J1">
+    <joint name="j1">
       <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
     </joint>
     <actuator name="motor1">
@@ -279,7 +323,7 @@
 
  <transmission name="tran2">
      <type>transmission_interface/SimpleTransmission</type>
-     <joint name="J2">
+     <joint name="j2">
        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
      </joint>
      <actuator name="motor2">
@@ -290,7 +334,7 @@
 
 <transmission name="tran3">
     <type>transmission_interface/SimpleTransmission</type>
-    <joint name="J3">
+    <joint name="j3">
       <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
     </joint>
     <actuator name="motor3">
@@ -301,7 +345,7 @@
 
 <transmission name="tran4">
     <type>transmission_interface/SimpleTransmission</type>
-    <joint name="J5">
+    <joint name="j4">
       <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
     </joint>
     <actuator name="motor4">
@@ -309,6 +353,18 @@
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
+
+<transmission name="tran5">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="j5">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="motor5">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+
 
 
   <!-- Gazebo plugin for ROS Control -->
@@ -318,63 +374,19 @@
     </plugin>
 </gazebo>
 
-
-
-
-<gazebo reference="camera_link">
-  <sensor type="camera" name="camera1">
-    <update_rate>30.0</update_rate>
-    <camera name="head">
-      <horizontal_fov>1.3962634</horizontal_fov>
-      <image>
-        <width>800</width>
-        <height>800</height>
-        <format>R8G8B8</format>
-      </image>
-      <clip>
-        <near>0.02</near>
-        <far>300</far>
-      </clip>
-      <noise>
-        <type>gaussian</type>
-        <!-- Noise is sampled independently per pixel on each frame.
-             That pixel's noise value is added to each of its color
-             channels, which at that point lie in the range [0,1]. -->
-        <mean>0.0</mean>
-        <stddev>0.007</stddev>
-      </noise>
-    </camera>
-    <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
-      <alwaysOn>true</alwaysOn>
-      <updateRate>0.0</updateRate>
-      <cameraName>rrbot/camera1</cameraName>
-      <imageTopicName>image_raw</imageTopicName>
-      <cameraInfoTopicName>camera_info</cameraInfoTopicName>
-      <frameName>camera_link</frameName>
-      <hackBaseline>0.07</hackBaseline>
-      <distortionK1>0.0</distortionK1>
-      <distortionK2>0.0</distortionK2>
-      <distortionK3>0.0</distortionK3>
-      <distortionT1>0.0</distortionT1>
-      <distortionT2>0.0</distortionT2>
-    </plugin>
-  </sensor>
-</gazebo>
-
-<gazebo>
-<plugin name="gazebo_ros_vacuum_gripper" filename="libgazebo_ros_vacuum_gripper.so">
-        <robotNamespace>/vacuum_gripper</robotNamespace>
-        <bodyName>niddle</bodyName>
-        <topicName>grasping</topicName>
-      </plugin>
-</gazebo>
-<gazebo reference="L2">
+<gazebo reference="p1">
     <material>Gazebo/Orange</material>
 </gazebo>
-<gazebo reference="L3">
-    <material>Gazebo/Orange</material>
+<gazebo reference="p2">
+    <material>Gazebo/Blue</material>
 </gazebo>
-<gazebo reference="niddle">
-    <material>Gazebo/Orange</material>
+<gazebo reference="p3">
+    <material>Gazebo/Yellow</material>
 </gazebo>
-  </robot>
+<gazebo reference="p4">
+    <material>Gazebo/Purple</material>
+</gazebo>
+<gazebo reference="p5">
+    <material>Gazebo/Red</material>
+</gazebo>
+</robot>
