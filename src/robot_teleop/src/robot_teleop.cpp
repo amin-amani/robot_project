@@ -24,14 +24,15 @@ int main(int argc, char **argv)
 {
   ros::init(argc, argv, "robot_teleop");
   ros::NodeHandle nh;
-
-  ros::Publisher updownPub = nh.advertise<std_msgs::Float64>("/rrbot/joint3_position_controller/command", 10);
+  ros::Publisher gripperPub = nh.advertise<std_msgs::Float64>("/rrbot/joint5_position_controller/command", 10);
+  ros::Publisher rotPub = nh.advertise<std_msgs::Float64>("/rrbot/joint3_position_controller/command", 10);
+  ros::Publisher updownPub = nh.advertise<std_msgs::Float64>("/rrbot/joint4_position_controller/command", 10);
   ros::Publisher fbPub = nh.advertise<std_msgs::Float64>("/rrbot/joint1_position_controller/command", 10);
   ros::Publisher rlPub = nh.advertise<std_msgs::Float64>("/rrbot/joint2_position_controller/command", 10);
   ros::ServiceClient vacuumOff = nh.serviceClient<std_srvs::Empty>("/vacuum_gripper/off");
   ros::ServiceClient vacuumOn = nh.serviceClient<std_srvs::Empty>("/vacuum_gripper/on");
   std_srvs::Empty emptyReq;
-  std_msgs::Float64 updownMessage,rlMessage,fbMessage;
+  std_msgs::Float64 updownMessage,rlMessage,fbMessage,rotMessage,gripperMessage;
   updownMessage.data =0.00;
   rlMessage.data=0;
   fbMessage.data=0;
@@ -58,28 +59,47 @@ else if(c=='a')
 {
 rlMessage.data -=.001;
 }
-else if(c=='e')
+else if(c=='e')//lower="-0.005" upper="0.065"
 {
+ if(updownMessage.data<0.066)
 updownMessage.data +=.001;
+
 }
 else if(c=='q')
 {
-updownMessage.data -=.001;
+if(updownMessage.data>-0.005)
+    updownMessage.data -=.001;
+
 }
 else if(c=='z')
 {
-vacuumOn.call(emptyReq);
+if(gripperMessage.data>-0.02)
+    gripperMessage.data-=.001;
+
+
 }
 else if(c=='c')
 {
 
-vacuumOff.call(emptyReq);
+gripperMessage.data+=0.001;
+if(gripperMessage.data>0.007)gripperMessage.data=0.007;
+}
+else if(c=='r')
+{
+rotMessage.data-=0.01;
+}
+else if(c=='t')
+{
+
+rotMessage.data+=0.01;;
 }
 
 
 updownPub.publish(updownMessage);
 rlPub.publish(rlMessage);
 fbPub.publish(fbMessage);
+gripperPub.publish(gripperMessage);
+rotPub.publish(rotMessage);
 
     ros::spinOnce();
 

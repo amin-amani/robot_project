@@ -3,8 +3,7 @@
 <robot  xmlns:xacro="http://www.ros.org/wiki/xacro" name="rrbot">
 
 
-<link
-    name="base_link">
+<link name="base_link">
     <inertial>
       <origin
         xyz="0.249025149842267 0.288536369831321 0.424095630505477"
@@ -253,8 +252,8 @@
     <child
       link="p4" />
     <axis
-      xyz="0 1 0" />
-      <limit effort="1000.0" lower="-0.073" upper="-0.010" velocity="0.5"/>
+      xyz="0 -1 0" />
+      <limit effort="1000.0" lower="-0.006" upper="0.066" velocity="0.5"/>
   </joint>
 
 <link   name="p5">
@@ -306,8 +305,8 @@
     <child
       link="p5" />
     <axis
-      xyz="1 0 0" />
-      <limit effort="1000.0" lower="-0.1" upper="0.02" velocity="0.5"/>
+      xyz="-1 0 0" />
+      <limit effort="10.0" lower="-0.02" upper="0.01" velocity="0.5"/>
   </joint>
 
 <transmission name="tran1">
