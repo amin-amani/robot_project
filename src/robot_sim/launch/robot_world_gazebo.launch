@@ -8,9 +8,11 @@
   </include>
 
 <param name="robot_description" command="$(find xacro)/xacro --inorder $(arg model)" />
+
 <node pkg="robot_state_publisher" type="robot_state_publisher"  name="robot_state_publisher">
-    <param name="publish_frequency" type="double" value="30.0" />
-  </node>
+  <param name="publish_frequency" type="double" value="30.0" />
+</node>
+
 <!-- Load joint controller configurations from YAML file to parameter server -->
 <rosparam file="$(find robot_sim)/config/rrbot_control.yaml" command="load"/>
 

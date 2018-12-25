@@ -68,13 +68,13 @@ updownMessage.data +=.001;
 else if(c=='q')
 {
 if(updownMessage.data>-0.005)
-    updownMessage.data -=.001;
+    updownMessage.data -=.0005;
 
 }
 else if(c=='z')
 {
 if(gripperMessage.data>-0.02)
-    gripperMessage.data-=.001;
+    gripperMessage.data-=.0005;
 
 
 }
