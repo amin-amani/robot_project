@@ -43,11 +43,11 @@ int main(int argc, char **argv)
 
 
 ROS_INFO("msg{%c}",c);
-if(c=='w')
+if(c=='x')
 {
 fbMessage.data +=.001;
 }
-else if(c=='x')
+else if(c=='w')
 {
 fbMessage.data -=.001;
 }
@@ -59,13 +59,13 @@ else if(c=='a')
 {
 rlMessage.data -=.001;
 }
-else if(c=='e')//lower="-0.005" upper="0.065"
+else if(c=='q')//lower="-0.005" upper="0.065"
 {
  if(updownMessage.data<0.066)
 updownMessage.data +=.001;
 
 }
-else if(c=='q')
+else if(c=='e')
 {
 if(updownMessage.data>-0.005)
     updownMessage.data -=.001;
@@ -73,16 +73,16 @@ if(updownMessage.data>-0.005)
 }
 else if(c=='z')
 {
-if(gripperMessage.data>-0.02)
-    gripperMessage.data-=.001;
-
+//if(gripperMessage.data>-0.02)
+  //  gripperMessage.data-=.001;
+  gripperMessage.data=-5;
 
 }
 else if(c=='c')
 {
-
-gripperMessage.data+=0.001;
-if(gripperMessage.data>0.007)gripperMessage.data=0.007;
+gripperMessage.data=100;
+//gripperMessage.data+=0.001;
+//if(gripperMessage.data>0.007)gripperMessage.data=0.007;
 }
 else if(c=='r')
 {

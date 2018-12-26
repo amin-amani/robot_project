@@ -82,60 +82,11 @@
       <heading_deg>0</heading_deg>
     </spherical_coordinates>
     <model name='robot'>
-      <link name='dummy'>
+      <link name='base_link'>
         <pose frame=''>0 0 0 0 -0 0</pose>
         <inertial>
-          <pose frame=''>0.15 0.15 0.2 0 -0 0</pose>
-          <mass>10</mass>
-          <inertia>
-            <ixx>-1.11022e-16</ixx>
-            <ixy>8.32667e-17</ixy>
-            <ixz>5.55112e-17</ixz>
-            <iyy>-1.11022e-16</iyy>
-            <iyz>5.55112e-17</iyz>
-            <izz>-1.66533e-16</izz>
-          </inertia>
-        </inertial>
-        <collision name='dummy_fixed_joint_lump__base_link_collision'>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-          <geometry>
-            <mesh>
-              <scale>1 1 1</scale>
-              <uri>/home/amin/robot_project/src/robot_sim/meshes/base_link.STL</uri>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='dummy_fixed_joint_lump__base_link_visual'>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-          <geometry>
-            <mesh>
-              <scale>1 1 1</scale>
-              <uri>/home/amin/robot_project/src/robot_sim/meshes/base_link.STL</uri>
-            </mesh>
-          </geometry>
-        </visual>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <link name='L1'>
-        <pose frame=''>0.01 0.19744 0.2 0 -0 0</pose>
-        <inertial>
-          <pose frame=''>0.14 0.01 0.064787 0 -0 0</pose>
-          <mass>0.188</mass>
+          <pose frame=''>0.249025 0.288536 0.424096 0 -0 0</pose>
+          <mass>1200.2</mass>
           <inertia>
             <ixx>0</ixx>
             <ixy>0</ixy>
@@ -145,34 +96,67 @@
             <izz>0</izz>
           </inertia>
         </inertial>
-        <collision name='L1_collision'>
+        <collision name='base_link_collision'>
           <pose frame=''>0 0 0 0 -0 0</pose>
           <geometry>
             <mesh>
               <scale>1 1 1</scale>
-              <uri>/home/amin/robot_project/src/robot_sim/meshes/L1.STL</uri>
+              <uri>/home/amin/robot_project/src/robot_sim/meshes/base_link.STL</uri>
             </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
           <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
             <friction>
+              <ode>
+                <mu>10</mu>
+                <mu2>10</mu2>
+                <fdir1>0 0 0</fdir1>
+                <slip1>0</slip1>
+                <slip2>0</slip2>
+              </ode>
               <torsional>
-                <ode/>
+                <coefficient>1</coefficient>
+                <patch_radius>0</patch_radius>
+                <surface_radius>0</surface_radius>
+                <use_patch_radius>1</use_patch_radius>
+                <ode>
+                  <slip>0</slip>
+                </ode>
               </torsional>
-              <ode/>
             </friction>
+            <bounce>
+              <restitution_coefficient>0</restitution_coefficient>
+              <threshold>1e+06</threshold>
+            </bounce>
+            <contact>
+              <collide_without_contact>0</collide_without_contact>
+              <collide_without_contact_bitmask>1</collide_without_contact_bitmask>
+              <collide_bitmask>1</collide_bitmask>
+              <ode>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+13</kp>
+                <kd>1</kd>
+                <max_vel>0.01</max_vel>
+                <min_depth>0</min_depth>
+              </ode>
+              <bullet>
+                <split_impulse>1</split_impulse>
+                <split_impulse_penetration_threshold>-0.01</split_impulse_penetration_threshold>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+13</kp>
+                <kd>1</kd>
+              </bullet>
+            </contact>
           </surface>
         </collision>
-        <visual name='L1_visual'>
+        <visual name='base_link_visual'>
           <pose frame=''>0 0 0 0 -0 0</pose>
           <geometry>
             <mesh>
               <scale>1 1 1</scale>
-              <uri>/home/amin/robot_project/src/robot_sim/meshes/L1.STL</uri>
+              <uri>/home/amin/robot_project/src/robot_sim/meshes/base_link.STL</uri>
             </mesh>
           </geometry>
         </visual>
@@ -180,14 +164,70 @@
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
-      <joint name='J1' type='prismatic'>
-        <child>L1</child>
-        <parent>dummy</parent>
+      <link name='p1'>
+        <pose frame=''>0.249025 0.1 0.5 0 -0 0</pose>
+        <inertial>
+          <pose frame=''>0 0.185556 0.02 0 -0 0</pose>
+          <mass>1.512</mass>
+          <inertia>
+            <ixx>0</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0</iyy>
+            <iyz>0</iyz>
+            <izz>0</izz>
+          </inertia>
+        </inertial>
+        <collision name='p1_collision'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/amin/robot_project/src/robot_sim/meshes/p1.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='p1_visual'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/amin/robot_project/src/robot_sim/meshes/p1.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Orange</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='j1' type='prismatic'>
+        <child>p1</child>
+        <parent>base_link</parent>
         <axis>
           <xyz>0 1 0</xyz>
           <limit>
-            <lower>-0.2</lower>
-            <upper>0.08</upper>
+            <lower>-0.05</lower>
+            <upper>0.4</upper>
             <effort>1000</effort>
             <velocity>0.5</velocity>
           </limit>
@@ -198,11 +238,11 @@
           <use_parent_model_frame>1</use_parent_model_frame>
         </axis>
       </joint>
-      <link name='L2'>
-        <pose frame=''>0.11 0.19744 0.29 0 -0 0</pose>
+      <link name='p2'>
+        <pose frame=''>0.249025 0.06 0.71 0 -0 3.1415</pose>
         <inertial>
-          <pose frame=''>0.015 0.00148 0.001655 0 -0 0</pose>
-          <mass>0.00887445</mass>
+          <pose frame=''>-0.02 0.03 0.052048 0 -0 0</pose>
+          <mass>0.122548</mass>
           <inertia>
             <ixx>0</ixx>
             <ixy>0</ixy>
@@ -212,12 +252,12 @@
             <izz>0</izz>
           </inertia>
         </inertial>
-        <collision name='L2_collision'>
+        <collision name='p2_collision'>
           <pose frame=''>0 0 0 0 -0 0</pose>
           <geometry>
             <mesh>
               <scale>1 1 1</scale>
-              <uri>/home/amin/robot_project/src/robot_sim/meshes/L2.STL</uri>
+              <uri>/home/amin/robot_project/src/robot_sim/meshes/p2.STL</uri>
             </mesh>
           </geometry>
           <surface>
@@ -234,17 +274,17 @@
           </surface>
           <max_contacts>10</max_contacts>
         </collision>
-        <visual name='L2_visual'>
+        <visual name='p2_visual'>
           <pose frame=''>0 0 0 0 -0 0</pose>
           <geometry>
             <mesh>
               <scale>1 1 1</scale>
-              <uri>/home/amin/robot_project/src/robot_sim/meshes/L2.STL</uri>
+              <uri>/home/amin/robot_project/src/robot_sim/meshes/p2.STL</uri>
             </mesh>
           </geometry>
           <material>
             <script>
-              <name>Gazebo/Orange</name>
+              <name>Gazebo/Blue</name>
               <uri>file://media/materials/scripts/gazebo.material</uri>
             </script>
           </material>
@@ -254,14 +294,14 @@
         <self_collide>0</self_collide>
         <kinematic>0</kinematic>
       </link>
-      <joint name='J2' type='prismatic'>
-        <child>L2</child>
-        <parent>L1</parent>
+      <joint name='j2' type='prismatic'>
+        <child>p2</child>
+        <parent>p1</parent>
         <axis>
-          <xyz>1 0 0</xyz>
+          <xyz>-1 9.3e-05 0</xyz>
           <limit>
-            <lower>-0.12</lower>
-            <upper>0.17</upper>
+            <lower>-0.23</lower>
+            <upper>0.27</upper>
             <effort>1000</effort>
             <velocity>0.5</velocity>
           </limit>
@@ -272,11 +312,11 @@
           <use_parent_model_frame>1</use_parent_model_frame>
         </axis>
       </joint>
-      <link name='L3'>
-        <pose frame=''>0.125 0.18244 0.29 0 -0 0</pose>
+      <link name='p3'>
+        <pose frame=''>0.269032 0.129998 0.75 -0 1.57 3.1415</pose>
         <inertial>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-          <mass>0.011781</mass>
+          <pose frame=''>0 -0.031069 0.000105 0 -0 0</pose>
+          <mass>0.161431</mass>
           <inertia>
             <ixx>0</ixx>
             <ixy>0</ixy>
@@ -286,12 +326,12 @@
             <izz>0</izz>
           </inertia>
         </inertial>
-        <collision name='L3_collision'>
+        <collision name='p3_collision'>
           <pose frame=''>0 0 0 0 -0 0</pose>
           <geometry>
             <mesh>
               <scale>1 1 1</scale>
-              <uri>/home/amin/robot_project/src/robot_sim/meshes/L3.STL</uri>
+              <uri>/home/amin/robot_project/src/robot_sim/meshes/p3.STL</uri>
             </mesh>
           </geometry>
           <surface>
@@ -308,17 +348,17 @@
           </surface>
           <max_contacts>10</max_contacts>
         </collision>
-        <visual name='L3_visual'>
-          <pose frame=''>0 -0 0 0 -0 0</pose>
+        <visual name='p3_visual'>
+          <pose frame=''>0.04 0 0 0 -0 1.57</pose>
           <geometry>
             <mesh>
               <scale>1 1 1</scale>
-              <uri>/home/amin/robot_project/src/robot_sim/meshes/L3.STL</uri>
+              <uri>/home/amin/robot_project/src/robot_sim/meshes/p3.STL</uri>
             </mesh>
           </geometry>
           <material>
             <script>
-              <name>Gazebo/Orange</name>
+              <name>Gazebo/Yellow</name>
               <uri>file://media/materials/scripts/gazebo.material</uri>
             </script>
           </material>
@@ -328,79 +368,11 @@
         <self_collide>0</self_collide>
         <kinematic>0</kinematic>
       </link>
-      <joint name='J3' type='prismatic'>
-        <child>L3</child>
-        <parent>L2</parent>
+      <joint name='j3' type='revolute'>
+        <child>p3</child>
+        <parent>p2</parent>
         <axis>
-          <xyz>0 0 -1</xyz>
-          <limit>
-            <lower>0</lower>
-            <upper>0.08</upper>
-            <effort>1000</effort>
-            <velocity>0.5</velocity>
-          </limit>
-          <dynamics>
-            <spring_reference>0</spring_reference>
-            <spring_stiffness>0</spring_stiffness>
-          </dynamics>
-          <use_parent_model_frame>1</use_parent_model_frame>
-        </axis>
-      </joint>
-      <link name='niddle'>
-        <pose frame=''>0.125 0.18244 0.285 0 -0 0</pose>
-        <inertial>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-          <mass>0.001</mass>
-          <inertia>
-            <ixx>0</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>0</iyy>
-            <iyz>0</iyz>
-            <izz>0</izz>
-          </inertia>
-        </inertial>
-        <collision name='niddle_fixed_joint_lump__collision_collision'>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-          <geometry>
-            <cylinder>
-              <length>0.01</length>
-              <radius>0.001</radius>
-            </cylinder>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='niddle_fixed_joint_lump__visual_visual'>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-          <geometry>
-            <cylinder>
-              <length>0.01</length>
-              <radius>0.001</radius>
-            </cylinder>
-          </geometry>
-        </visual>
-        <gravity>1</gravity>
-        <velocity_decay/>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-      </link>
-      <joint name='J5' type='revolute'>
-        <child>niddle</child>
-        <parent>L3</parent>
-        <axis>
-          <xyz>0 0 1</xyz>
+          <xyz>-0.000796 0 -1</xyz>
           <limit>
             <lower>-1e+16</lower>
             <upper>1e+16</upper>
@@ -412,204 +384,399 @@
           <use_parent_model_frame>1</use_parent_model_frame>
         </axis>
       </joint>
-      <link name='camera_link'>
-        <pose frame=''>0.125 0.16244 0.29 -0 1.57 -1.57</pose>
+      <link name='p4'>
+        <pose frame=''>0.269032 0.129998 0.75 1.57 0.000796 -1.57089</pose>
         <inertial>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-          <mass>1e-05</mass>
+          <pose frame=''>0.01378 -0.002 0.008 0 -0 0</pose>
+          <mass>2</mass>
           <inertia>
-            <ixx>1e-06</ixx>
+            <ixx>0</ixx>
             <ixy>0</ixy>
             <ixz>0</ixz>
-            <iyy>1e-06</iyy>
+            <iyy>0</iyy>
             <iyz>0</iyz>
-            <izz>1e-06</izz>
+            <izz>0</izz>
           </inertia>
         </inertial>
-        <visual name='camera_link_visual'>
+        <collision name='p4_collision'>
           <pose frame=''>0 0 0 0 -0 0</pose>
           <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/amin/robot_project/src/robot_sim/meshes/p4.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>100</mu2>
+                <fdir1>0 0 0</fdir1>
+                <slip1>0</slip1>
+                <slip2>0</slip2>
+              </ode>
+              <torsional>
+                <coefficient>1</coefficient>
+                <patch_radius>0</patch_radius>
+                <surface_radius>0</surface_radius>
+                <use_patch_radius>1</use_patch_radius>
+                <ode>
+                  <slip>0</slip>
+                </ode>
+              </torsional>
+            </friction>
+            <bounce>
+              <restitution_coefficient>0</restitution_coefficient>
+              <threshold>1e+06</threshold>
+            </bounce>
+            <contact>
+              <collide_without_contact>0</collide_without_contact>
+              <collide_without_contact_bitmask>1</collide_without_contact_bitmask>
+              <collide_bitmask>1</collide_bitmask>
+              <ode>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+13</kp>
+                <kd>1</kd>
+                <max_vel>0.01</max_vel>
+                <min_depth>0</min_depth>
+              </ode>
+              <bullet>
+                <split_impulse>1</split_impulse>
+                <split_impulse_penetration_threshold>-0.01</split_impulse_penetration_threshold>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+13</kp>
+                <kd>1</kd>
+              </bullet>
+            </contact>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='p4_visual'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/amin/robot_project/src/robot_sim/meshes/p4.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Purple</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='j4' type='prismatic'>
+        <child>p4</child>
+        <parent>p3</parent>
+        <axis>
+          <xyz>-0.000796 0.000796 -0.999999</xyz>
+          <limit>
+            <lower>-0.006</lower>
+            <upper>0.066</upper>
+            <effort>1000</effort>
+            <velocity>0.5</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='p5'>
+        <pose frame=''>0.268926 0.138604 0.616807 1.57159 0.000797 -0.000889</pose>
+        <inertial>
+          <pose frame=''>0.01378 -0.002 0.008 0 -0 0</pose>
+          <mass>1</mass>
+          <inertia>
+            <ixx>0</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0</iyy>
+            <iyz>0</iyz>
+            <izz>0</izz>
+          </inertia>
+        </inertial>
+        <collision name='p5_collision'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/amin/robot_project/src/robot_sim/meshes/p5.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100.0</mu>
+                <mu2>100.0</mu2>
+                <fdir1>0 0 0</fdir1>
+                <slip1>0</slip1>
+                <slip2>0</slip2>
+              </ode>
+              <torsional>
+                <coefficient>1</coefficient>
+                <patch_radius>0</patch_radius>
+                <surface_radius>0</surface_radius>
+                <use_patch_radius>1</use_patch_radius>
+                <ode>
+                  <slip>0</slip>
+                </ode>
+              </torsional>
+            </friction>
+            <bounce>
+              <restitution_coefficient>0</restitution_coefficient>
+              <threshold>1e+06</threshold>
+            </bounce>
+            <contact>
+              <collide_without_contact>0</collide_without_contact>
+              <collide_without_contact_bitmask>1</collide_without_contact_bitmask>
+              <collide_bitmask>1</collide_bitmask>
+              <ode>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+13</kp>
+                <kd>1</kd>
+                <max_vel>0.01</max_vel>
+                <min_depth>0</min_depth>
+              </ode>
+              <bullet>
+                <split_impulse>1</split_impulse>
+                <split_impulse_penetration_threshold>-0.01</split_impulse_penetration_threshold>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+13</kp>
+                <kd>1</kd>
+              </bullet>
+            </contact>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='p5_visual'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/amin/robot_project/src/robot_sim/meshes/p5.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Red</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='j5' type='prismatic'>
+        <child>p5</child>
+        <parent>p4</parent>
+        <axis>
+          <xyz>-0.999999 0.000889 0.000797</xyz>
+          <limit>
+            <lower>-0.02</lower>
+            <upper>0.01</upper>
+            <effort>10</effort>
+            <velocity>0.5</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <static>0</static>
+      <plugin name='gazebo_ros_control' filename='libgazebo_ros_control.so'>
+        <robotNamespace>/rrbot</robotNamespace>
+      </plugin>
+      <pose frame=''>0 0 0 0 -0 0</pose>
+    </model>
+    <state world_name='default'>
+      <sim_time>82 220000000</sim_time>
+      <real_time>92 492468664</real_time>
+      <wall_time>1545763832 46263098</wall_time>
+      <iterations>82220</iterations>
+      <model name='ground_plane'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='robot'>
+        <pose frame=''>0.000334 0.027722 -2e-06 -1e-06 -7e-06 -0.024885</pose>
+        <scale>1 1 1</scale>
+        <link name='base_link'>
+          <pose frame=''>0.000334 0.027722 -2e-06 -1e-06 -7e-06 -0.024885</pose>
+          <velocity>-7e-06 6e-06 0.000236 -0.003605 -0.008018 -1.7e-05</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>-146.119 105.859 -5873.24 0 -0 0</wrench>
+        </link>
+        <link name='p1'>
+          <pose frame=''>0.251762 0.121418 0.500001 -6e-06 -1.9e-05 -0.024894</pose>
+          <velocity>-0.003312 5.2e-05 0.001595 -0.00187 -0.002353 0.000629</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0.526212 -0.166224 -7.50305 0 -0 0</wrench>
+        </link>
+        <link name='p2'>
+          <pose frame=''>0.250508 0.081438 0.710004 7e-06 1.9e-05 3.11661</pose>
+          <velocity>-0.00014 0.000548 0.001584 -0.002946 -0.002035 0.000407</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0.041947 0.034879 -0.694041 0 -0 0</wrench>
+        </link>
+        <link name='p3'>
+          <pose frame=''>0.27225 0.150916 0.749994 0.007792 1.57002 3.12456</pose>
+          <velocity>-0.00027 0.000724 0.002763 -0.003143 -0.002414 -0.0003</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0.044677 0.039571 -0.341918 0 -0 0</wrench>
+        </link>
+        <link name='p4'>
+          <pose frame=''>0.272201 0.15097 0.683986 1.57002 0.00079 -1.59562</pose>
+          <velocity>1.9e-05 0.000509 0.003994 -0.003005 -0.003678 -0.0003</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>-0.207646 0.206583 3.15616 0 -0 0</wrench>
+        </link>
+        <link name='p5'>
+          <pose frame=''>0.273383 0.159547 0.550791 1.57158 0.000774 -0.025618</pose>
+          <velocity>0.000112 9.9e-05 0.004069 -0.003204 -0.003997 -0.0003</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0.027179 -0.078542 1.70149 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='smallbox'>
+        <pose frame=''>0.29931 0.208249 0.530029 -0.000321 0.002599 -0.001662</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose frame=''>0.29931 0.208249 0.530029 -0.000321 0.002599 -0.001662</pose>
+          <velocity>-0.00417 0.001869 0.011968 -1.2e-05 -1e-05 -1e-06</velocity>
+          <acceleration>-4.1705 1.86906 11.9679 -0.011963 -0.010497 -0.001391</acceleration>
+          <wrench>-0.041705 0.018691 0.119679 0 -0 0</wrench>
+        </link>
+      </model>
+      <light name='sun'>
+        <pose frame=''>0 0 10 0 -0 0</pose>
+      </light>
+    </state>
+    <model name='smallbox'>
+      <link name='link'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <inertial>
+          <mass>0.01</mass>
+          <inertia>
+            <ixx>0.001</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.001</iyy>
+            <iyz>0</iyz>
+            <izz>0.001</izz>
+          </inertia>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+        </inertial>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+        <visual name='visual'>
+          <geometry>
             <box>
-              <size>0.01 0.01 0.01</size>
+              <size>0.02 0.02 0.02</size>
             </box>
           </geometry>
           <material>
             <script>
-              <uri>__default__</uri>
-              <name>__default__</name>
+              <name>Gazebo/Grey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
             </script>
+            <ambient>0.3 0.3 0.3 1</ambient>
+            <diffuse>0.7 0.7 0.7 1</diffuse>
+            <specular>0.01 0.01 0.01 1</specular>
+            <emissive>0 0 0 1</emissive>
+            <shader type='vertex'>
+              <normal_map>__default__</normal_map>
+            </shader>
           </material>
-        </visual>
-        <gravity>1</gravity>
-        <velocity_decay/>
-        <self_collide>0</self_collide>
-        <sensor name='camera1' type='camera'>
-          <update_rate>30</update_rate>
-          <camera name='head'>
-            <horizontal_fov>1.39626</horizontal_fov>
-            <image>
-              <width>800</width>
-              <height>800</height>
-              <format>R8G8B8</format>
-            </image>
-            <clip>
-              <near>0.02</near>
-              <far>300</far>
-            </clip>
-            <noise>
-              <type>gaussian</type>
-              <mean>0</mean>
-              <stddev>0.007</stddev>
-            </noise>
-          </camera>
-          <plugin name='camera_controller' filename='libgazebo_ros_camera.so'>
-            <alwaysOn>true</alwaysOn>
-            <updateRate>0.0</updateRate>
-            <cameraName>rrbot/camera1</cameraName>
-            <imageTopicName>image_raw</imageTopicName>
-            <cameraInfoTopicName>camera_info</cameraInfoTopicName>
-            <frameName>camera_link</frameName>
-            <hackBaseline>0.07</hackBaseline>
-            <distortionK1>0.0</distortionK1>
-            <distortionK2>0.0</distortionK2>
-            <distortionK3>0.0</distortionK3>
-            <distortionT1>0.0</distortionT1>
-            <distortionT2>0.0</distortionT2>
-            <robotNamespace>/</robotNamespace>
-          </plugin>
-        </sensor>
-        <kinematic>0</kinematic>
-      </link>
-      <joint name='J4' type='revolute'>
-        <child>camera_link</child>
-        <parent>L2</parent>
-        <axis>
-          <xyz>1e-06 -0.000796 -1</xyz>
-          <limit>
-            <lower>-1e+16</lower>
-            <upper>1e+16</upper>
-          </limit>
-          <dynamics>
-            <spring_reference>0</spring_reference>
-            <spring_stiffness>0</spring_stiffness>
-          </dynamics>
-          <use_parent_model_frame>1</use_parent_model_frame>
-        </axis>
-      </joint>
-      <plugin name='gazebo_ros_control' filename='libgazebo_ros_control.so'>
-        <robotNamespace>/rrbot</robotNamespace>
-      </plugin>
-      <static>0</static>
-      <plugin name='gazebo_ros_vacuum_gripper' filename='libgazebo_ros_vacuum_gripper.so'>
-        <robotNamespace>/vacuum_gripper</robotNamespace>
-        <bodyName>niddle</bodyName>
-        <topicName>grasping</topicName>
-      </plugin>
-      <pose frame=''>0 0 0 0 -0 0</pose>
-    </model>
-    <model name='circuit'>
-      <static>0</static>
-      <link name='link'>
-        <inertial>
           <pose frame=''>0 0 0 0 -0 0</pose>
-          <mass>1e-05</mass>
-          <inertia>
-            <ixx>0.000166667</ixx>
-            <iyy>0.000166667</iyy>
-            <izz>0.000166667</izz>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyz>0</iyz>
-          </inertia>
-        </inertial>
+          <cast_shadows>1</cast_shadows>
+          <transparency>0</transparency>
+        </visual>
         <collision name='collision'>
-          <geometry>
-          <mesh>
-            <scale>1 1 1</scale>
-            <uri>/home/amin/robot_project/src/robot_sim/models/circuit/meshes/pcb.dae</uri>
-          </mesh>
-          </geometry>
+          <laser_retro>0</laser_retro>
           <max_contacts>10</max_contacts>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.02 0.02 0.02</size>
+            </box>
+          </geometry>
           <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
             <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>100</mu2>
+                <fdir1>0 0 0</fdir1>
+                <slip1>0</slip1>
+                <slip2>0</slip2>
+              </ode>
               <torsional>
-                <ode/>
+                <coefficient>1</coefficient>
+                <patch_radius>0</patch_radius>
+                <surface_radius>0</surface_radius>
+                <use_patch_radius>1</use_patch_radius>
+                <ode>
+                  <slip>0</slip>
+                </ode>
               </torsional>
-              <ode/>
             </friction>
+            <bounce>
+              <restitution_coefficient>0</restitution_coefficient>
+              <threshold>1e+06</threshold>
+            </bounce>
+            <contact>
+              <collide_without_contact>0</collide_without_contact>
+              <collide_without_contact_bitmask>1</collide_without_contact_bitmask>
+              <collide_bitmask>1</collide_bitmask>
+              <ode>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+13</kp>
+                <kd>1</kd>
+                <max_vel>0</max_vel>
+                <min_depth>0</min_depth>
+              </ode>
+              <bullet>
+                <split_impulse>1</split_impulse>
+                <split_impulse_penetration_threshold>-0.01</split_impulse_penetration_threshold>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+13</kp>
+                <kd>1</kd>
+              </bullet>
+            </contact>
           </surface>
         </collision>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-            <uri>/home/amin/robot_project/src/robot_sim/models/circuit/meshes/pcb.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-        </visual>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
       </link>
-      <pose frame=''>0.15 0.09 0.2 0 -0 0</pose>
-    </model>
-    <model name='cap0805'>
       <static>0</static>
-      <link name='link'>
-        <inertial>
-          <pose frame=''>0.001 0 0 0 -0 0</pose>
-          <mass>0.011</mass>
-          <inertia>
-            <ixx>0.000166667</ixx>
-            <iyy>0.000166667</iyy>
-            <izz>0.000166667</izz>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyz>0</iyz>
-          </inertia>
-        </inertial>
-        <collision name='collision'>
-          <geometry>
-            <mesh>
-            <uri>/home/amin/robot_project/src/robot_sim/models/cap0805/meshes/cap.dae</uri>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-            <uri>/home/amin/robot_project/src/robot_sim/models/cap0805/meshes/cap.dae</uri>
-            <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-        </visual>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <pose frame=''>0.10 0.15 0.2 0 -0 0</pose>
+      <allow_auto_disable>1</allow_auto_disable>
+      <pose frame=''>-0.781914 0.178651 0.5 0 -0 0</pose>
     </model>
-
     <gui fullscreen='0'>
       <camera name='user_camera'>
-        <pose frame=''>0.286678 -0.175503 0.416119 0 0.523642 1.9722</pose>
+        <pose frame=''>0.209775 0.736632 0.877032 0 0.483643 -1.60699</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>
