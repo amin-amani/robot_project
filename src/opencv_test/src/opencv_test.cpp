@@ -228,10 +228,10 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg)
      ///QString   CurrentDirectory="/home/amin/1.png";
       ///Mat image=imread("/home/amin/1.png");
      //cameraFeed=imread("/home/amin/1.png");
-     cameraFeed=imread("/home/amin/shapes.png");
-        GetAvrageFilterImage(cameraFeed,output);
+     //cameraFeed=imread("/home/amin/shapes.png");
+       // GetAvrageFilterImage(cameraFeed,output);
 imshow("view1", cameraFeed);
-    imshow("view", output);
+    //imshow("view", output);
     waitKey(30);
   }
   catch (cv_bridge::Exception& e)
@@ -254,20 +254,20 @@ int main(int argc, char **argv)
       //Mat cameraFeed=cv_bridge::toCvShare(msg, "bgr8")->image;
    ///QString   CurrentDirectory="/home/amin/1.png";
    Mat output;
-   Mat cameraFeed=imread("/home/amin/shapes.png");
-   //Mat cameraFeed=imread("/home/amin/1.jpg");
+   //Mat cameraFeed=imread("/home/amin/shapes.png");
+   Mat cameraFeed=imread("/home/amin/robot_project/sample.png");
 
    GetAvrageFilterImage(cameraFeed,output);
    imshow("filtered", output);
-   output=ShapeDetect(output,cameraFeed);
+   //output=ShapeDetect(output,cameraFeed);
    //output=DoConvex(output,cameraFeed);
 //   vector<Point> elspcnt;
 //   vector<RotatedRect> elips;
 //   FindSibleProperties(output,cameraFeed,elspcnt,elips,0,0,100,100);
 //   DrawElipses(cameraFeed,elips);
 
-imshow("view", cameraFeed);
-imshow("last", output);
+//imshow("view", cameraFeed);
+//imshow("last", output);
 
   ros::spinOnce();
       waitKey(30);
