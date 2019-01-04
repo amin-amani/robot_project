@@ -14,25 +14,129 @@ Rect objectBoundingRectangle = Rect(0,0,0,0);
  int obj_x[1000];
  int obj_y[1000];
  int obj_r[1000];
-Mat GetAvrageFilterImage(Mat cameraFeed, Mat &output)
+
+ Mat GetAvrageFilterImage(Mat cameraFeed, Mat &output)
 {
 
     Size filterSize(4, 4);
-
-
+    Mat adpOut;
     if (cameraFeed.empty())return cameraFeed;
-
-
     blur(cameraFeed, output, filterSize);
-
     cvtColor(output, output, CV_BGR2GRAY);
+
+    //threshold(output, output, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
     adaptiveThreshold(output, output, 255.0, ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY_INV, 11, 2.0);
-
-
+    //adaptiveThreshold(output, adpOut, 255.0, ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY_INV, 11, 2.0);
+//bitwise_or(output,adpOut,output);
     return cameraFeed;
-
 }
 
+ vector<Rect>  FindBlobs(Mat thresholdImage, Mat &cameraFeed,int max,int min)
+ {
+     Mat src_copy = cameraFeed.clone();
+vector<Rect> res;
+        Rect foundedRect = Rect(0,0,0,0);
+     vector<vector<Point> > contours,outcontours;
+     vector<Vec4i> hierarchy;
+
+
+     /// Find contours
+     findContours( thresholdImage, contours, hierarchy, CV_RETR_CCOMP, CV_CHAIN_APPROX_SIMPLE, Point(0, 0) );
+
+
+
+     for( int i = 0; i < contours.size(); i++ )
+     {
+
+         if(contours.at(i).size()<min)continue;
+         if(contours.at(i).size()>max)continue;
+
+             outcontours.push_back(contours.at(i));
+     }
+
+//     vector<vector<Point> >hull( outcontours.size() );
+//     for( size_t i = 0; i < outcontours.size(); i++ )
+//     {
+//         convexHull( outcontours[i], hull[i] );
+//     }
+     /// Draw contours + hull results
+
+     Mat drawing = Mat::zeros( thresholdImage.size(), CV_8UC3 );
+
+     for( int i = 0; i< outcontours.size(); i++ )
+        {
+          Scalar color = Scalar(255,100,0 );
+            foundedRect=boundingRect(outcontours[i]);
+
+            //if(foundedRect.width)continue;
+            //if(foundedRect.height<40)continue;
+            //std::cout << " Area:"<<i<<" ="  <<foundedRect.height-foundedRect.width<<std::endl;
+            //std::cout << " Area: " << contourArea(outcontours[i]) << " c="<<i<<std::endl;
+            if(abs(foundedRect.height-foundedRect.width)>50)continue;
+            if(contourArea(outcontours[i])<500)continue;
+            if(contourArea(outcontours[i])>10000)continue;
+            foundedRect.x+=350;//this shift is because of image crop
+            rectangle(cameraFeed,foundedRect,Scalar(30,100,255 ));
+            res.push_back(foundedRect);
+
+          //drawContours( drawing, outcontours, i, color, 1, 8, vector<Vec4i>(), 0, Point() );
+          //drawContours( cameraFeed,outcontours, i, color, 1, 8, vector<Vec4i>(), 0, Point() );
+        }
+
+//vector <Point >res;
+     return  res;
+     //cameraFeed=drawing;
+     //namedWindow( "Hull demo", CV_WINDOW_AUTOSIZE );
+     //imshow( "Hull demo", drawing );
+
+ }
+
+ Mat  FilterBlob(Mat thresholdImage, Mat &cameraFeed,int max,int min)
+ {
+     Mat src_copy = cameraFeed.clone();
+
+     vector<vector<Point> > contours,outcontours;
+     vector<Vec4i> hierarchy;
+
+
+     /// Find contours
+     findContours( thresholdImage, contours, hierarchy, CV_RETR_CCOMP, CV_CHAIN_APPROX_SIMPLE, Point(0, 0) );
+
+
+
+     for( int i = 0; i < contours.size(); i++ )
+     {
+
+         if(contours.at(i).size()<min)continue;
+         if(contours.at(i).size()>max)continue;
+
+             outcontours.push_back(contours.at(i));
+     }
+
+     vector<vector<Point> >hull( outcontours.size() );
+     for( size_t i = 0; i < outcontours.size(); i++ )
+     {
+         convexHull( outcontours[i], hull[i] );
+     }
+     /// Draw contours + hull results
+
+     Mat drawing = Mat::zeros( thresholdImage.size(), CV_8UC3 );
+
+     for( int i = 0; i< outcontours.size(); i++ )
+        {
+          Scalar color = Scalar(255,0,0 );
+
+          drawContours( drawing, hull, i, color, 1, 8, vector<Vec4i>(), 0, Point() );
+          drawContours( cameraFeed,hull, i, color, 1, 8, vector<Vec4i>(), 0, Point() );
+        }
+
+
+     return  drawing;
+     //cameraFeed=drawing;
+     //namedWindow( "Hull demo", CV_WINDOW_AUTOSIZE );
+     //imshow( "Hull demo", drawing );
+
+ }
 Mat  DoConvex(Mat thresholdImage, Mat &cameraFeed)
 {
     Mat src_copy = cameraFeed.clone();
@@ -81,7 +185,7 @@ Mat  ShapeDetect(Mat thresholdImage, Mat &cameraFeed)
     //threshold( src_gray, threshold_output, thresh, 255, THRESH_BINARY );
 
     /// Find contours
-    findContours( thresholdImage, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0) );
+    findContours( thresholdImage, contours, hierarchy, CV_RETR_CCOMP, CV_CHAIN_APPROX_SIMPLE, Point(0, 0) );
 
     vector<vector<Point> > approx;
 
@@ -225,13 +329,19 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg)
   {
     Mat output;
         Mat cameraFeed=cv_bridge::toCvShare(msg, "bgr8")->image;
-     ///QString   CurrentDirectory="/home/amin/1.png";
-      ///Mat image=imread("/home/amin/1.png");
-     //cameraFeed=imread("/home/amin/1.png");
-     //cameraFeed=imread("/home/amin/shapes.png");
-       // GetAvrageFilterImage(cameraFeed,output);
+        GetAvrageFilterImage(cameraFeed,output);
+        //imshow("filtered", output);
+
+        cv::Rect myROI(350, 0, 800-350,800);
+
+        // Crop the full image to that image contained by the rectangle myROI
+        // Note that this doesn't copy the data
+      output= output(myROI);
+
+        imshow("filtered", output);
+     FindBlobs(output,cameraFeed,100,40);
 imshow("view1", cameraFeed);
-    //imshow("view", output);
+    imshow("view", output);
     waitKey(30);
   }
   catch (cv_bridge::Exception& e)
@@ -248,25 +358,31 @@ int main(int argc, char **argv)
   cv::startWindowThread();
   image_transport::ImageTransport it(nh);
   image_transport::Subscriber sub = it.subscribe("rrbot/camera1/image_raw", 1, imageCallback);
-  //ros::spin();
+  ros::spin();
   while(ros::ok())
   {
       //Mat cameraFeed=cv_bridge::toCvShare(msg, "bgr8")->image;
    ///QString   CurrentDirectory="/home/amin/1.png";
    Mat output;
    //Mat cameraFeed=imread("/home/amin/shapes.png");
-   Mat cameraFeed=imread("/home/amin/robot_project/sample.png");
+   Mat cameraFeed=imread("/home/amin/robot_project/shadow.png");
 
    GetAvrageFilterImage(cameraFeed,output);
-   imshow("filtered", output);
-   //output=ShapeDetect(output,cameraFeed);
-   //output=DoConvex(output,cameraFeed);
-//   vector<Point> elspcnt;
-//   vector<RotatedRect> elips;
-//   FindSibleProperties(output,cameraFeed,elspcnt,elips,0,0,100,100);
-//   DrawElipses(cameraFeed,elips);
 
-//imshow("view", cameraFeed);
+   // Setup a rectangle to define your region of interest
+
+
+   cv::Rect myROI(350, 0, 800-350,800);
+
+   // Crop the full image to that image contained by the rectangle myROI
+   // Note that this doesn't copy the data
+ output= output(myROI);
+
+   imshow("filtered", output);
+
+FindBlobs(output,cameraFeed,100,40);
+//imshow("blob", FindBlobs(output,cameraFeed,100,40));
+imshow("view", cameraFeed);
 //imshow("last", output);
 
   ros::spinOnce();
