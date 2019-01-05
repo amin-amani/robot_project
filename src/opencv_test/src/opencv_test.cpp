@@ -31,7 +31,7 @@ Rect objectBoundingRectangle = Rect(0,0,0,0);
     return cameraFeed;
 }
 
- vector<Rect>  FindBlobs(Mat thresholdImage, Mat &cameraFeed,int max,int min)
+ vector<Rect>  FindBlobs(Mat thresholdImage, Mat &cameraFeed,uint max,uint min)
  {
      Mat src_copy = cameraFeed.clone();
 vector<Rect> res;
@@ -39,20 +39,29 @@ vector<Rect> res;
      vector<vector<Point> > contours,outcontours;
      vector<Vec4i> hierarchy;
 
-
-     /// Find contours
-     findContours( thresholdImage, contours, hierarchy, CV_RETR_CCOMP, CV_CHAIN_APPROX_SIMPLE, Point(0, 0) );
-
-
-
-     for( int i = 0; i < contours.size(); i++ )
+     findContours( thresholdImage,  contours, hierarchy, RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE, Point(0, 0) );
+Mat drawing = Mat::zeros( thresholdImage.size(), CV_8UC3 );
+     for( uint i = 0; i < contours.size(); i++ )
      {
+     drawContours(drawing, contours, i, Scalar(255,255,255), FILLED);
+        }
 
-         if(contours.at(i).size()<min)continue;
-         if(contours.at(i).size()>max)continue;
 
-             outcontours.push_back(contours.at(i));
-     }
+     //imshow( "Hull demo", drawing );
+        cvtColor(drawing, thresholdImage, CV_BGR2GRAY);
+     /// Find contours
+     findContours( thresholdImage, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE, Point(0, 0) );
+
+
+
+     //for( uint i = 0; i < contours.size(); i++ )
+     //{
+
+        //if(contours.at(i).size()<min)continue;
+        //if(contours.at(i).size()>max)continue;
+
+       //      outcontours.push_back(contours.at(i));
+     //}
 
 //     vector<vector<Point> >hull( outcontours.size() );
 //     for( size_t i = 0; i < outcontours.size(); i++ )
@@ -61,26 +70,26 @@ vector<Rect> res;
 //     }
      /// Draw contours + hull results
 
-     Mat drawing = Mat::zeros( thresholdImage.size(), CV_8UC3 );
 
-     for( int i = 0; i< outcontours.size(); i++ )
+
+     for( uint i = 0; i< contours.size(); i++ )
         {
           Scalar color = Scalar(255,100,0 );
-            foundedRect=boundingRect(outcontours[i]);
+            foundedRect=boundingRect(contours[i]);
 
             //if(foundedRect.width)continue;
             //if(foundedRect.height<40)continue;
             //std::cout << " Area:"<<i<<" ="  <<foundedRect.height-foundedRect.width<<std::endl;
             //std::cout << " Area: " << contourArea(outcontours[i]) << " c="<<i<<std::endl;
-            if(abs(foundedRect.height-foundedRect.width)>50)continue;
-            if(contourArea(outcontours[i])<500)continue;
-            if(contourArea(outcontours[i])>10000)continue;
+            if(abs(foundedRect.height-foundedRect.width)>100)continue;
+            if(contourArea(contours[i])<500)continue;
+            if(contourArea(contours[i])>10000)continue;
             foundedRect.x+=350;//this shift is because of image crop
             rectangle(cameraFeed,foundedRect,Scalar(30,100,255 ));
             res.push_back(foundedRect);
-
-          //drawContours( drawing, outcontours, i, color, 1, 8, vector<Vec4i>(), 0, Point() );
-          //drawContours( cameraFeed,outcontours, i, color, 1, 8, vector<Vec4i>(), 0, Point() );
+         //drawContours(drawing, outcontours, i, Scalar(255,255,255), FILLED);
+          //drawContours( drawing, outcontours, i, color, 1, CV_FILLED, vector<Vec4i>(), 0, Point() );
+          //drawContours( cameraFeed,outcontours, i, color, 1, 1, vector<Vec4i>(), 0, Point() );
         }
 
 //vector <Point >res;
@@ -91,7 +100,7 @@ vector<Rect> res;
 
  }
 
- Mat  FilterBlob(Mat thresholdImage, Mat &cameraFeed,int max,int min)
+ Mat  FilterBlob(Mat thresholdImage, Mat &cameraFeed,uint max,uint min)
  {
      Mat src_copy = cameraFeed.clone();
 
@@ -104,7 +113,7 @@ vector<Rect> res;
 
 
 
-     for( int i = 0; i < contours.size(); i++ )
+     for( uint i = 0; i < contours.size(); i++ )
      {
 
          if(contours.at(i).size()<min)continue;
@@ -122,7 +131,7 @@ vector<Rect> res;
 
      Mat drawing = Mat::zeros( thresholdImage.size(), CV_8UC3 );
 
-     for( int i = 0; i< outcontours.size(); i++ )
+     for( uint i = 0; i< outcontours.size(); i++ )
         {
           Scalar color = Scalar(255,0,0 );
 
@@ -338,10 +347,11 @@ void imageCallback(const sensor_msgs::ImageConstPtr& msg)
         // Note that this doesn't copy the data
       output= output(myROI);
 
-        imshow("filtered", output);
-     FindBlobs(output,cameraFeed,100,40);
+     FindBlobs(output,cameraFeed,300,20);
+
+     circle(cameraFeed, Point(400,400),20, Scalar(255,0,0),2, 8,0);
 imshow("view1", cameraFeed);
-    imshow("view", output);
+//    imshow("view", output);
     waitKey(30);
   }
   catch (cv_bridge::Exception& e)
@@ -359,34 +369,28 @@ int main(int argc, char **argv)
   image_transport::ImageTransport it(nh);
   image_transport::Subscriber sub = it.subscribe("rrbot/camera1/image_raw", 1, imageCallback);
   ros::spin();
+
   while(ros::ok())
   {
-      //Mat cameraFeed=cv_bridge::toCvShare(msg, "bgr8")->image;
+   //Mat cameraFeed=cv_bridge::toCvShare(msg, "bgr8")->image;
    ///QString   CurrentDirectory="/home/amin/1.png";
    Mat output;
-   //Mat cameraFeed=imread("/home/amin/shapes.png");
-   Mat cameraFeed=imread("/home/amin/robot_project/shadow.png");
-
+   Mat cameraFeed=imread("/home/amin/bug2.png");
+   //Mat cameraFeed=imread("/home/amin/robot_project/shadow.png");
    GetAvrageFilterImage(cameraFeed,output);
-
    // Setup a rectangle to define your region of interest
-
-
    cv::Rect myROI(350, 0, 800-350,800);
-
    // Crop the full image to that image contained by the rectangle myROI
    // Note that this doesn't copy the data
- output= output(myROI);
+    output= output(myROI);
+    //imshow("filtered", output);
+    FindBlobs(output,cameraFeed,300,20);
+    //imshow("blob", FindBlobs(output,cameraFeed,100,40));
+    imshow("view", cameraFeed);
+    imshow("last", output);
 
-   imshow("filtered", output);
-
-FindBlobs(output,cameraFeed,100,40);
-//imshow("blob", FindBlobs(output,cameraFeed,100,40));
-imshow("view", cameraFeed);
-//imshow("last", output);
-
-  ros::spinOnce();
-      waitKey(30);
+    ros::spinOnce();
+    waitKey(30);
 
 
   }
